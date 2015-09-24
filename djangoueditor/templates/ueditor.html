@@ -1,5 +1,5 @@
 <script id="{{ editor.id }}" name="{{ editor.name }}" 
-    style="width: {{ settings.width }}; height: {{ settings.height }};">
+    style="width: {{ editor.width | safe }}; height: {{ editor.height | safe }}; float: left;">
     {{ editor.value | safe }}
 </script>
     

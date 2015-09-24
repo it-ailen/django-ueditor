@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.contrib.admin.widgets import AdminTextareaWidget
 from django.conf import settings as G_SETTINGS
 import os
+import json
 
 class UEditorWidget(django.forms.Textarea):
     def __init__(self, settings, **kwargs):
@@ -29,17 +30,22 @@ class UEditorWidget(django.forms.Textarea):
               )
 
     def render(self, name, value, attrs=None):
-        editor = {
-                  "id": "id_%s" % name.replace('-', '_'),
-                  "name": name,
-                  "value": value,
-                  }
+
         defaultSettings = getattr(G_SETTINGS, "UEDITOR_CONFIG", {})
         print("settings: %s" % self.settings)
         defaultSettings.update(self.settings)
         print("defaultSettings: %s" % defaultSettings)
         defaultSettings["serverUrl"] = os.path.join("/ueditor/upload", 
                                         defaultSettings.get("upload_to", ""))
+        settingsStr = json.dumps(defaultSettings, ensure_ascii=False)
+        print("settingsStr: %s" % settingsStr)
+        editor = {
+                  "id": "id_%s" % name.replace('-', '_'),
+                  "name": name,
+                  "value": value,
+                  "width": defaultSettings.get("width", ""),
+                  "height": defaultSettings.get("height", ""),
+                }
         context = {
                    "editor": editor,
 #                    "settings": {
@@ -48,7 +54,7 @@ class UEditorWidget(django.forms.Textarea):
 #                                 "autoHeightEnabled": "false",
 #                                 "serverUrl": "test.html",
 #                                 },
-                   "settings": defaultSettings,
+                   "settings": settingsStr,
                    }
         html = mark_safe(render_to_string("ueditor.html", context))
         print("render: %s" % html)

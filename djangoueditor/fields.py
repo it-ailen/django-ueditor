@@ -20,9 +20,6 @@ class UEditorField(models.TextField):
         
     def formfield(self, **kwargs):
         defaults = {'widget': self.widget}
-#         defaults = {
-#                     'widget': UEditorWidget(settings=self.ueditorSettings),
-#                     }
         defaults.update(kwargs)
         print("UEditorField.formfield.ueditorSettings=%s" % self.ueditorSettings)
         print("UEditorField.formfield.defaults=%s" % defaults)
