@@ -1,0 +1,8 @@
+<script id="{{ editor.id }}" name="{{ editor.name }}" 
+    style="width: {{ settings.width }}; height: {{ settings.height }};">
+    {{ editor.value | safe }}
+</script>
+    
+<script type="text/javascript">
+    var ue = UE.getEditor("{{ editor.id }}", {{ settings | safe }});
+</script>
